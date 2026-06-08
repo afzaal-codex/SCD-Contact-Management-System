@@ -1,0 +1,8 @@
+.jdk/
+lib/
+bin/
+*.zip
+*.log
+contacts.txt
+.idea/
+*.class
