@@ -266,21 +266,51 @@ public class ContactForm extends JFrame {
 
     // method to validate input fields
     private boolean validateInput() {
-        if (txtId.getText().trim().isEmpty()) {
+        // ID must contain digits only
+        String id = txtId.getText().trim();
+        if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this, "ID is required");
             return false;
         }
+        if (!id.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "ID must contain digits only");
+            return false;
+        }
 
-        if (txtName.getText().trim().isEmpty()) {
+        // Name must not exceed 3 words and each word must start with a capital letter
+        String name = txtName.getText().trim();
+        if (name.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Name is required");
             return false;
         }
+        String[] words = name.split("\\s+");
+        if (words.length > 3) {
+            JOptionPane.showMessageDialog(this, "Name must not be more than 3 words");
+            return false;
+        }
+        for (String w : words) {
+            if (w.isEmpty() || !Character.isUpperCase(w.charAt(0))) {
+                JOptionPane.showMessageDialog(this, "First letter of each word in Name must be capital");
+                return false;
+            }
+        }
 
-        if (!txtPhone.getText().matches("\\d+")) {
+        // Phone must contain digits only and must be at least 11 digits
+        String phone = txtPhone.getText().trim();
+        if (phone.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Phone is required");
+            return false;
+        }
+        if (!phone.matches("\\d+")) {
             JOptionPane.showMessageDialog(this, "Phone must contain digits only");
             return false;
         }
+        if (phone.length() < 11) {
+            JOptionPane.showMessageDialog(this, "Phone must be at least 11 digits");
+            return false;
+        }
 
+        // Email must contain @
         if (!txtEmail.getText().contains("@")) {
             JOptionPane.showMessageDialog(this, "Invalid Email");
             return false;
