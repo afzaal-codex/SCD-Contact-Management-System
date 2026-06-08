@@ -179,11 +179,24 @@ public class ContactForm extends JFrame {
 
     // method to add contact
     private void addContact() {
+        // validate inputs first
+        if (!validateInput()) {
+            return;
+        }
+
         String id = txtId.getText().trim();
         String name = txtName.getText().trim();
         String phone = txtPhone.getText().trim();
         String email = txtEmail.getText().trim();
         String address = txtAddress.getText().trim();
+
+        // check if id already exists
+        for (Contact c : contactList) {
+            if (c.getId().equals(id)) {
+                JOptionPane.showMessageDialog(this, "ID already exists!");
+                return;
+            }
+        }
 
         // create a new contact object
         Contact contact = new Contact(id, name, phone, email, address);
@@ -209,6 +222,11 @@ public class ContactForm extends JFrame {
             return;
         }
 
+        // validate other fields first
+        if (!validateInput()) {
+            return;
+        }
+
         boolean found = false;
         for (Contact c : contactList) {
             if (c.getId().equals(id)) {
@@ -229,6 +247,31 @@ public class ContactForm extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Contact not found!");
         }
+    }
+
+    // method to validate input fields
+    private boolean validateInput() {
+        if (txtId.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ID is required");
+            return false;
+        }
+
+        if (txtName.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name is required");
+            return false;
+        }
+
+        if (!txtPhone.getText().matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Phone must contain digits only");
+            return false;
+        }
+
+        if (!txtEmail.getText().contains("@")) {
+            JOptionPane.showMessageDialog(this, "Invalid Email");
+            return false;
+        }
+
+        return true;
     }
 
     // method to delete contact
