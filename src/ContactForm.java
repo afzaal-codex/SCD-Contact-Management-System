@@ -141,12 +141,52 @@ public class ContactForm extends JFrame {
             }
         });
 
+        // add contact action
+        btnAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addContact();
+            }
+        });
+
         // clear form action
         btnClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 clearForm();
             }
         });
+    }
+
+    // method to add contact
+    private void addContact() {
+        String id = txtId.getText().trim();
+        String name = txtName.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String email = txtEmail.getText().trim();
+        String address = txtAddress.getText().trim();
+
+        // create a new contact object
+        Contact contact = new Contact(id, name, phone, email, address);
+
+        // add it to the list
+        contactList.add(contact);
+
+        // reload the table
+        loadTable();
+
+        // reset form inputs
+        clearForm();
+
+        // show success message
+        JOptionPane.showMessageDialog(this, "Contact added successfully!");
+    }
+
+    // method to load the list data into table
+    private void loadTable() {
+        tableModel.setRowCount(0);
+        for (Contact c : contactList) {
+            String[] row = {c.getId(), c.getName(), c.getPhone(), c.getEmail(), c.getAddress()};
+            tableModel.addRow(row);
+        }
     }
 
     // method to clear all input fields
