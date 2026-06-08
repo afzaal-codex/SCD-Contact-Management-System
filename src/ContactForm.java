@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.io.IOException;
 
 // contact form class that creates the GUI
 public class ContactForm extends JFrame {
@@ -138,6 +139,20 @@ public class ContactForm extends JFrame {
         itemExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        // save data action
+        itemSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveDataToFile();
+            }
+        });
+
+        // load data action
+        itemLoad.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loadDataFromFile();
             }
         });
 
@@ -334,6 +349,27 @@ public class ContactForm extends JFrame {
         for (Contact c : contactList) {
             String[] row = {c.getId(), c.getName(), c.getPhone(), c.getEmail(), c.getAddress()};
             tableModel.addRow(row);
+        }
+    }
+
+    // method to save data to file
+    private void saveDataToFile() {
+        try {
+            ContactFile.saveData(contactList);
+            JOptionPane.showMessageDialog(this, "Data saved successfully to contacts.txt!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error saving data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // method to load data from file
+    private void loadDataFromFile() {
+        try {
+            contactList = ContactFile.loadData();
+            loadTable();
+            JOptionPane.showMessageDialog(this, "Data loaded successfully from contacts.txt!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error loading data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
