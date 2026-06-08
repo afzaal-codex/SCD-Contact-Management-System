@@ -148,6 +148,13 @@ public class ContactForm extends JFrame {
             }
         });
 
+        // update contact action
+        btnUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updateContact();
+            }
+        });
+
         // clear form action
         btnClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -178,6 +185,36 @@ public class ContactForm extends JFrame {
 
         // show success message
         JOptionPane.showMessageDialog(this, "Contact added successfully!");
+    }
+
+    // method to update contact
+    private void updateContact() {
+        String id = txtId.getText().trim();
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter ID to update");
+            return;
+        }
+
+        boolean found = false;
+        for (Contact c : contactList) {
+            if (c.getId().equals(id)) {
+                c.setName(txtName.getText().trim());
+                c.setPhone(txtPhone.getText().trim());
+                c.setEmail(txtEmail.getText().trim());
+                c.setAddress(txtAddress.getText().trim());
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            // reload table and clear inputs
+            loadTable();
+            clearForm();
+            JOptionPane.showMessageDialog(this, "Contact updated successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Contact not found!");
+        }
     }
 
     // method to load the list data into table
