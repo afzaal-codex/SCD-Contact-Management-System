@@ -162,6 +162,13 @@ public class ContactForm extends JFrame {
             }
         });
 
+        // search contact action
+        btnSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                searchContact();
+            }
+        });
+
         // clear form action
         btnClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -245,6 +252,34 @@ public class ContactForm extends JFrame {
             loadTable();
             clearForm();
             JOptionPane.showMessageDialog(this, "Contact deleted successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Contact not found!");
+        }
+    }
+
+    // method to search contact
+    private void searchContact() {
+        String id = txtId.getText().trim();
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter ID to search");
+            return;
+        }
+
+        Contact foundContact = null;
+        for (Contact c : contactList) {
+            if (c.getId().equals(id)) {
+                foundContact = c;
+                break;
+            }
+        }
+
+        if (foundContact != null) {
+            // populate text fields with found details
+            txtName.setText(foundContact.getName());
+            txtPhone.setText(foundContact.getPhone());
+            txtEmail.setText(foundContact.getEmail());
+            txtAddress.setText(foundContact.getAddress());
+            JOptionPane.showMessageDialog(this, "Contact found!");
         } else {
             JOptionPane.showMessageDialog(this, "Contact not found!");
         }
